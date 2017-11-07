@@ -24,34 +24,45 @@ public class CenterTopStyle extends LayoutStyle {
         super(layoutRes);
     }
 
+    public CenterTopStyle(View decoView, int offset) {
+        super(decoView, offset);
+    }
+
+    public CenterTopStyle(View decoView) {
+        super(decoView);
+    }
+
     @Override
     public void showDecorationOnScreen(final ViewInfo viewInfo, ViewGroup parent) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        final View view = inflater.inflate(layoutRes, parent, false);
-        parent.addView(view);
-        view.setVisibility(View.INVISIBLE);
-        view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        if (decoView==null){
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            decoView = inflater.inflate(layoutRes, parent, false);
+        }
+
+        parent.addView(decoView);
+        decoView.setVisibility(View.INVISIBLE);
+        decoView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 if (Build.VERSION.SDK_INT < 16) {
-                    view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    decoView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                 } else {
-                    view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    decoView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 }
-                FrameLayout.LayoutParams child_params = (FrameLayout.LayoutParams) view.getLayoutParams();
-                child_params.leftMargin = viewInfo.offsetX + (viewInfo.width-view.getWidth())/2;
-                child_params.topMargin = viewInfo.offsetY -view.getHeight()-offset;
-                view.requestLayout();
+                FrameLayout.LayoutParams child_params = (FrameLayout.LayoutParams) decoView.getLayoutParams();
+                child_params.leftMargin = viewInfo.offsetX + (viewInfo.width-decoView.getWidth())/2;
+                child_params.topMargin = viewInfo.offsetY -decoView.getHeight()-offset;
+                decoView.requestLayout();
                 //多一次布局监听，防止view闪烁
-                view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                decoView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
                     public void onGlobalLayout() {
                         if (Build.VERSION.SDK_INT < 16) {
-                            view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                            decoView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                         } else {
-                            view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                            decoView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                         }
-                        view.setVisibility(View.VISIBLE);
+                        decoView.setVisibility(View.VISIBLE);
                     }
                 });
             }

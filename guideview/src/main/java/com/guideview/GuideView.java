@@ -13,6 +13,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -34,6 +35,7 @@ public class GuideView extends FrameLayout implements View.OnClickListener {
     private LightType lightType;
 
     private int blurWidth;
+    private boolean isAutoNext;
 
 
     private List<ViewInfo> viewInfos;
@@ -61,12 +63,15 @@ public class GuideView extends FrameLayout implements View.OnClickListener {
         maskColor = 0xCC000000;
         setWillNotDraw(false);
         desCanvas = new Canvas();
-        setOnClickListener(this);
     }
 
-    public void setBlur(int radius,int blurWidth){
-        this.blurWidth=blurWidth;
+    public void setBlur(int radius, int blurWidth) {
+        this.blurWidth = blurWidth;
         maskPaint.setMaskFilter(new BlurMaskFilter(radius, BlurMaskFilter.Blur.SOLID));
+    }
+
+    public void setAutoNext(boolean autoNext) {
+        isAutoNext = autoNext;
     }
 
     @Override
@@ -84,7 +89,7 @@ public class GuideView extends FrameLayout implements View.OnClickListener {
 
 
     public void setViewInfos(List<ViewInfo> viewInfos) {
-        Log.i("blurWidth",blurWidth+"");
+        Log.i("blurWidth", blurWidth + "");
         this.viewInfos = viewInfos;
         if (desBitmaps == null) {
             desBitmaps = new ArrayList<>();
@@ -92,14 +97,14 @@ public class GuideView extends FrameLayout implements View.OnClickListener {
         for (ViewInfo viewInfo : viewInfos) {
             switch (lightType) {
                 case Rectangle:
-                    desBitmaps.add(Bitmap.createBitmap(viewInfo.width+2*blurWidth, viewInfo.height+2*blurWidth, Bitmap.Config.ARGB_8888));
+                    desBitmaps.add(Bitmap.createBitmap(viewInfo.width + 2 * blurWidth, viewInfo.height + 2 * blurWidth, Bitmap.Config.ARGB_8888));
                     break;
                 case Circle:
-                    int diameter = Math.max(viewInfo.width, viewInfo.height)+2*blurWidth;
+                    int diameter = Math.max(viewInfo.width, viewInfo.height) + 2 * blurWidth;
                     desBitmaps.add(Bitmap.createBitmap(diameter, diameter, Bitmap.Config.ARGB_8888));
                     break;
                 case Oval:
-                    desBitmaps.add(Bitmap.createBitmap(viewInfo.width+2*blurWidth, viewInfo.height+2*blurWidth, Bitmap.Config.ARGB_8888));
+                    desBitmaps.add(Bitmap.createBitmap(viewInfo.width + 2 * blurWidth, viewInfo.height + 2 * blurWidth, Bitmap.Config.ARGB_8888));
                     break;
                 default:
                     break;
@@ -135,12 +140,21 @@ public class GuideView extends FrameLayout implements View.OnClickListener {
         canvas.restoreToCount(saved);
     }
 
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        if (isAutoNext) {
+            return true;
+        } else {
+            return super.onInterceptTouchEvent(ev);
+        }
+    }
+
     private void drawHighLight(Canvas srcCanvas, Bitmap desBitmap, ViewInfo viewInfo) {
         switch (lightType) {
             case Rectangle:
                 desCanvas.setBitmap(desBitmap);
-                desCanvas.drawRect(blurWidth, blurWidth, viewInfo.width+blurWidth, viewInfo.height+blurWidth, maskPaint);
-                srcCanvas.drawBitmap(desBitmap, viewInfo.offsetX-blurWidth, viewInfo.offsetY-blurWidth, maskPaint);
+                desCanvas.drawRect(blurWidth, blurWidth, viewInfo.width + blurWidth, viewInfo.height + blurWidth, maskPaint);
+                srcCanvas.drawBitmap(desBitmap, viewInfo.offsetX - blurWidth, viewInfo.offsetY - blurWidth, maskPaint);
 //                加圆角的话可以在这
 //                if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
 //                    desCanvas.drawRoundRect(0, 0, viewInfo.width, viewInfo.height,3,3, maskPaint);
@@ -151,12 +165,12 @@ public class GuideView extends FrameLayout implements View.OnClickListener {
             case Circle:
                 desCanvas.setBitmap(desBitmap);
                 desCanvas.drawCircle(desBitmap.getWidth() / 2, desBitmap.getWidth() / 2, viewInfo.width / 2, maskPaint);
-                srcCanvas.drawBitmap(desBitmap, viewInfo.offsetX-blurWidth, viewInfo.offsetY-blurWidth , maskPaint);
+                srcCanvas.drawBitmap(desBitmap, viewInfo.offsetX - blurWidth, viewInfo.offsetY - blurWidth, maskPaint);
                 break;
             case Oval:
                 desCanvas.setBitmap(desBitmap);
-                desCanvas.drawOval(new RectF(blurWidth, blurWidth, viewInfo.width+blurWidth, viewInfo.height+blurWidth), maskPaint);
-                srcCanvas.drawBitmap(desBitmap, viewInfo.offsetX-blurWidth, viewInfo.offsetY-blurWidth, maskPaint);
+                desCanvas.drawOval(new RectF(blurWidth, blurWidth, viewInfo.width + blurWidth, viewInfo.height + blurWidth), maskPaint);
+                srcCanvas.drawBitmap(desBitmap, viewInfo.offsetX - blurWidth, viewInfo.offsetY - blurWidth, maskPaint);
                 break;
             default:
                 break;
@@ -175,13 +189,17 @@ public class GuideView extends FrameLayout implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        if (isShowAll || bitmapPos == viewInfos.size()-1) {
-            ((ViewGroup) v.getParent()).removeView(v);
+        showHighLight();
+    }
+
+    public void showHighLight() {
+        if (isShowAll || bitmapPos == viewInfos.size() - 1) {
+            ((ViewGroup) this.getParent()).removeView(this);
             if (listener != null) {
                 listener.dismiss();
             }
         } else {
-            removeAllViews();
+            this.removeAllViews();
             bitmapPos++;
             layoutStyles.get(bitmapPos).showDecorationOnScreen(viewInfos.get(bitmapPos), this);
         }

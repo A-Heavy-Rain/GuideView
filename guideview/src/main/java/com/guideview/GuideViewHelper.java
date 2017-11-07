@@ -16,7 +16,7 @@ import java.util.List;
 
 public class GuideViewHelper {
     private ViewGroup rootView;
-    private GuideView maskView;
+    private GuideView guideView;
     private Context context;
     private List<ViewInfo> viewInfos;
     private List<View> lightViews;
@@ -25,10 +25,11 @@ public class GuideViewHelper {
     private LightType lightType = LightType.Rectangle;
     private int blurWidth;
 
+
     public GuideViewHelper(Activity activity) {
         this.rootView = (ViewGroup) activity.getWindow().getDecorView();
         this.context = activity;
-        maskView = new GuideView(context);
+        guideView = new GuideView(context);
         viewInfos = new ArrayList<>();
         lightViews = new ArrayList<>();
         layoutStyles = new ArrayList<>();
@@ -64,31 +65,37 @@ public class GuideViewHelper {
 
     public GuideViewHelper type(LightType lightType) {
         this.lightType=lightType;
-        maskView.type(lightType);
+        guideView.type(lightType);
         return this;
     }
 
     public GuideViewHelper onDismiss(GuideView.OnDismissListener listener) {
-        maskView.setOnDismissListener(listener);
+        guideView.setOnDismissListener(listener);
         return this;
     }
 
     public GuideViewHelper Blur(int radius,int blurWidth) {
         this.blurWidth=blurWidth;
-        maskView.setBlur(radius,blurWidth);
+        guideView.setBlur(radius,blurWidth);
         return this;
     }
     public GuideViewHelper Blur() {
         this.blurWidth=15;
-        maskView.setBlur(15,15);
+        guideView.setBlur(15,15);
         return this;
     }
-
+    public void nextLight(){
+        guideView.showHighLight();
+    }
 
     public void show() {
         show(false);
     }
-
+    public GuideViewHelper autoNext(){
+        guideView.setOnClickListener(guideView);
+        guideView.setAutoNext(true);
+        return this;
+    }
     public void postShow() {
         rootView.post(new Runnable() {
             @Override
@@ -138,25 +145,26 @@ public class GuideViewHelper {
         for (View lightView : lightViews) {
             viewInfos.add(obtainViewInfo(lightView));
         }
-        maskView.setViewInfos(viewInfos);
+        guideView.setViewInfos(viewInfos);
         if (blurWidth!=0){
             for (LayoutStyle layoutStyle : layoutStyles) {
                 layoutStyle.addBlurOffset(blurWidth);
             }
         }
         if (showAll) {
-            maskView.showAll();
+            guideView.showAll();
             for (int i = 0; i < layoutStyles.size(); i++) {
-                layoutStyles.get(i).showDecorationOnScreen(viewInfos.get(i), maskView);
+                layoutStyles.get(i).showDecorationOnScreen(viewInfos.get(i), guideView);
             }
+
         } else {
-            layoutStyles.get(0).showDecorationOnScreen(viewInfos.get(0), maskView);
-            maskView.setLayoutStyles(layoutStyles);
+            layoutStyles.get(0).showDecorationOnScreen(viewInfos.get(0), guideView);
+            guideView.setLayoutStyles(layoutStyles);
         }
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
-        rootView.addView(maskView, params);
+        rootView.addView(guideView, params);
     }
 
 

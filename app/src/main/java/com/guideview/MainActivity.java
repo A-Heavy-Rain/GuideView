@@ -107,10 +107,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         deco_view3.setOnClickListener(this);
         deco_view4.setOnClickListener(this);
 
-        ((TextView)deco_view1.findViewById(R.id.tv_deco)).setText("右上布局");
-        ((TextView)deco_view2.findViewById(R.id.tv_deco)).setText("正右方布局");
-        ((TextView)deco_view3.findViewById(R.id.tv_deco)).setText("左下方布局");
-        ((TextView)deco_view4.findViewById(R.id.tv_deco)).setText("正上方布局");
+        ((TextView)deco_view1.findViewById(R.id.tv_deco)).setText("右上布局\n点击下一个");
+        ((TextView)deco_view2.findViewById(R.id.tv_deco)).setText("正右方布局\n点击下一个");
+        ((TextView)deco_view3.findViewById(R.id.tv_deco)).setText("左下方布局\n点击下一个");
+        ((TextView)deco_view4.findViewById(R.id.tv_deco)).setText("正上方布局\n点击下一个");
 
         //注意这里要是addView第一个参数传的是View
         // 一定注意LayoutInflater.from(this).inflate中第二个一定要传入个ViewGroup

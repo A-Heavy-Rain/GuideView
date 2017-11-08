@@ -59,7 +59,7 @@ public class GuideView extends FrameLayout implements View.OnClickListener {
         maskPaint.setColor(Color.WHITE);
         maskPaint.setStyle(Paint.Style.FILL);
         maskPaint.setAntiAlias(true);
-
+        lightType=LightType.Rectangle;
         maskColor = 0xCC000000;
         setWillNotDraw(false);
         desCanvas = new Canvas();

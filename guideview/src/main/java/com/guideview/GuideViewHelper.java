@@ -1,7 +1,6 @@
 package com.guideview;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,9 +34,6 @@ public class GuideViewHelper {
         layoutStyles = new ArrayList<>();
     }
 
-    public GuideViewHelper(Fragment fragment) {
-        this(fragment.getActivity());
-    }
 
     /**
      *

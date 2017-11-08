@@ -37,7 +37,7 @@ new GuideViewHelper(MainActivity.this)
 ## 方法描述
 | GuideViewHelper方法名 | 备注
 | --- | ---
-|GuideViewHelper(Activity activity)|在Activity中使用
+|GuideViewHelper(Activity activity)| 构造方法传入 Activity
 | addView(View view, LayoutStyle layoutStyle) | 需要高亮的View，装饰布局相对高亮View在布局中的位子（默认提供了8种，用户也可以继承LayoutStyle自定义）。
 | addView(int viewId, LayoutStyle layoutStyle) | 需要高亮的View的id，装饰布局相对高亮View在布局中的位子（默认提供了8种，用户也可以继承LayoutStyle自定义）。
 | padding(int padding) | 高亮区域内边距。

@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.guideview.style.CenterRightStyle;
 import com.guideview.style.CenterTopStyle;
@@ -80,13 +79,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .addView(tv_light2, new CenterRightStyle(deco_view2))
                 .addView(tv_light3, new LeftBottomStyle(deco_view3, 10))
                 .addView(iv_light4, new CenterTopStyle(deco_view4, 10))
-                .type(LightType.Circle)
+                .padding(10)
+                .type(LightType.Rectangle)
                 .autoNext()
                 .Blur()
                 .onDismiss(new GuideView.OnDismissListener() {
                     @Override
                     public void dismiss() {
-                        Toast.makeText(getApplicationContext(), "finish", Toast.LENGTH_LONG).show();
                     }
                 });
         helper.postShow();
@@ -124,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .onDismiss(new GuideView.OnDismissListener() {
                     @Override
                     public void dismiss() {
-                        Toast.makeText(getApplicationContext(), "finish", Toast.LENGTH_LONG).show();
+//                        Toast.makeText(getApplicationContext(), "finish", Toast.LENGTH_LONG).show();
                     }
                 });
         helper.show();
@@ -147,12 +146,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .addView(tv_light2, new CenterRightStyle(deco_view2))
                 .addView(tv_light3, new LeftBottomStyle(deco_view3, 10))
                 .addView(iv_light4, new CenterTopStyle(deco_view4, 10))
-                .type(LightType.Circle)
+                .type(LightType.Oval)
                 .autoNext()
                 .onDismiss(new GuideView.OnDismissListener() {
                     @Override
                     public void dismiss() {
-                        Toast.makeText(getApplicationContext(), "finish", Toast.LENGTH_LONG).show();
+//                        Toast.makeText(getApplicationContext(), "finish", Toast.LENGTH_LONG).show();
                     }
                 })
                 .showAll();

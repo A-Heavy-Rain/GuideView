@@ -1,5 +1,22 @@
 # GuideView 简单易用的引导工具，觉得不错的话给个Star。
 ![img](https://github.com/A-Heavy-Rain/GuideView/blob/master/ezgif.com-video-to-gif.gif)
+## 引入方式
+#### 在project build.gradle中
+```
+allprojects {
+    repositories {
+
+        //下面需要加入的(add to jcenter还没审核通过，通过后我再修改)
+        maven { url 'https://dl.bintray.com/zhaozhibo/guideview/' }
+    }
+}
+```
+#### 在项目app build.gradle中
+```
+dependencies {
+    compile 'com.zhaozhibo.guideview:guideview:1.0.3'
+}
+```
 
 ## 基本使用示例
 ```
@@ -21,7 +38,6 @@ new GuideViewHelper(MainActivity.this)
 | GuideViewHelper方法名 | 备注
 | --- | ---
 |GuideViewHelper(Activity activity)|在Activity中使用
-|GuideViewHelper(Fragment fragment)|在Fragment中使用
 | addView(View view, LayoutStyle layoutStyle) | 需要高亮的View，装饰布局相对高亮View在布局中的位子（默认提供了8种，用户也可以继承LayoutStyle自定义）。
 | addView(int viewId, LayoutStyle layoutStyle) | 需要高亮的View的id，装饰布局相对高亮View在布局中的位子（默认提供了8种，用户也可以继承LayoutStyle自定义）。
 | padding(int padding) | 高亮区域内边距。

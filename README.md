@@ -1,16 +1,6 @@
 # GuideView 简单易用的引导工具，觉得不错的话给个Star。
 ![img](https://github.com/A-Heavy-Rain/GuideView/blob/master/ezgif.com-video-to-gif.gif)
 ## 引入方式
-#### 在project build.gradle中
-```
-allprojects {
-    repositories {
-
-        //下面需要加入的(add to jcenter还没审核通过，通过后我再修改)
-        maven { url 'https://dl.bintray.com/zhaozhibo/guideview/' }
-    }
-}
-```
 #### 在项目app build.gradle中
 ```
 dependencies {

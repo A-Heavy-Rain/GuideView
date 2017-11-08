@@ -1,4 +1,4 @@
-# GuideView 非常简单易用的引导工具，觉得不错的话给个Star。
+# GuideView 简单易用的引导工具，觉得不错的话给个Star。
 ![img](https://github.com/A-Heavy-Rain/GuideView/blob/master/ezgif.com-video-to-gif.gif)
 
 ## 基本使用示例

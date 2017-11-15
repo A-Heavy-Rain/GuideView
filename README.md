@@ -1,5 +1,12 @@
-# GuideView 简单易用的引导工具，觉得不错的话给个Star。
+# GuideView 简单实现高亮引导，觉得不错的话给个Star。
 ![img](https://github.com/A-Heavy-Rain/GuideView/blob/master/ezgif.com-video-to-gif.gif)
+## 引入方式
+#### 在项目app build.gradle中
+```
+dependencies {
+    compile 'com.zhaozhibo.guideview:guideview:1.0.3'
+}
+```
 
 ## 基本使用示例
 ```
@@ -20,8 +27,7 @@ new GuideViewHelper(MainActivity.this)
 ## 方法描述
 | GuideViewHelper方法名 | 备注
 | --- | ---
-|GuideViewHelper(Activity activity)|在Activity中使用
-|GuideViewHelper(Fragment fragment)|在Fragment中使用
+|GuideViewHelper(Activity activity)| 构造方法传入 Activity
 | addView(View view, LayoutStyle layoutStyle) | 需要高亮的View，装饰布局相对高亮View在布局中的位子（默认提供了8种，用户也可以继承LayoutStyle自定义）。
 | addView(int viewId, LayoutStyle layoutStyle) | 需要高亮的View的id，装饰布局相对高亮View在布局中的位子（默认提供了8种，用户也可以继承LayoutStyle自定义）。
 | padding(int padding) | 高亮区域内边距。
@@ -39,6 +45,6 @@ new GuideViewHelper(MainActivity.this)
 ### GuideView
 蒙版View继承FrameLayout，在其中处理高亮显示。
 ### LayoutStyle
-用于控制装饰高亮布局将对于高亮View所处的位子，默认提供了8种，用户也可以继承LayoutStyle自定义。
+用于控制装饰高亮布局将对于高亮View所处的位子，默认提供了8种，不满足你需求的话，也可以继承LayoutStyle自定义。
 ### ViewInfo
 记录了高亮View的宽高，相对屏幕左上角的坐标。

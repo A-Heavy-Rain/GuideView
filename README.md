@@ -4,7 +4,7 @@
 #### 在项目app build.gradle中
 ```
 dependencies {
-    compile 'com.zhaozhibo.guideview:guideview:1.0.3'
+    compile 'com.zhaozhibo.guideview:guideview:1.0.4'
 }
 ```
 

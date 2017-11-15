@@ -10,8 +10,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 26
-        versionCode 4
-        versionName "1.0.3"
+        versionCode 5
+        versionName "1.0.4"
 
 //        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -40,7 +40,7 @@ publish {
     groupId = 'com.zhaozhibo.guideview'//jcenter上的路径
     artifactId = 'guideview'//项目名称
     repoName = 'guideview'
-    publishVersion = '1.0.3'//版本号
+    publishVersion = '1.0.4'//版本号
     desc = 'Oh hi, this is a nice guideview for a project'//描述，不重要
     website = 'https://github.com/A-Heavy-Rain/GuideView'//网站，不重要
 }

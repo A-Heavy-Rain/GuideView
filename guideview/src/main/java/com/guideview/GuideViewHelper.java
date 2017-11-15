@@ -35,11 +35,7 @@ public class GuideViewHelper {
     }
 
 
-    /**
-     *
-     * @param padding 高亮区域内边距
-     * @return
-     */
+
     public GuideViewHelper padding(int padding) {
         this.padding = padding;
         return this;
@@ -65,19 +61,24 @@ public class GuideViewHelper {
         return this;
     }
 
+    public GuideViewHelper alpha(int alpha) {
+        guideView.setAlpha(alpha);
+        return this;
+    }
+
     public GuideViewHelper onDismiss(GuideView.OnDismissListener listener) {
         guideView.setOnDismissListener(listener);
         return this;
     }
 
-    public GuideViewHelper Blur(int radius,int blurWidth) {
+    public GuideViewHelper Blur(int radius) {
         this.blurWidth=blurWidth;
-        guideView.setBlur(radius,blurWidth);
+        guideView.setBlur(radius);
         return this;
     }
     public GuideViewHelper Blur() {
-        this.blurWidth=15;
-        guideView.setBlur(15,15);
+        this.blurWidth=10;
+        guideView.setBlur(10);
         return this;
     }
     public void nextLight(){

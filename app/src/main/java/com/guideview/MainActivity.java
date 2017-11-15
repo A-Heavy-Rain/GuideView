@@ -79,10 +79,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .addView(tv_light2, new CenterRightStyle(deco_view2))
                 .addView(tv_light3, new LeftBottomStyle(deco_view3, 10))
                 .addView(iv_light4, new CenterTopStyle(deco_view4, 10))
-                .padding(10)
                 .type(LightType.Rectangle)
                 .autoNext()
-                .Blur()
+                .alpha(150)
                 .onDismiss(new GuideView.OnDismissListener() {
                     @Override
                     public void dismiss() {
@@ -148,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .addView(iv_light4, new CenterTopStyle(deco_view4, 10))
                 .type(LightType.Oval)
                 .autoNext()
+                .Blur()
                 .onDismiss(new GuideView.OnDismissListener() {
                     @Override
                     public void dismiss() {

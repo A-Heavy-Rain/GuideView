@@ -4,7 +4,7 @@
 #### 在项目app build.gradle中
 ```
 dependencies {
-    compile 'com.zhaozhibo.guideview:guideview:1.0.3'
+    compile 'com.zhaozhibo.guideview:guideview:1.0.4'
 }
 ```
 
@@ -33,7 +33,8 @@ new GuideViewHelper(MainActivity.this)
 | padding(int padding) | 高亮区域内边距。
 | type(LightType lightType) | 高亮形状，目前有矩形，圆形，椭圆。
 | Blur() | 加模糊效果。
-| Blur(int radius,int blurWidth) | 加模糊效果的半径，和模糊效果所显示的宽度。
+| Blur(int radius) | 模糊效果的半径。
+| alpha(int alpha) | 高亮背景的透明度。
 | onDismiss(GuideView.OnDismissListener listener) | 监听高亮结束事件。
 | autoNext() | 点击屏幕自动下一个高亮显示，会拦截子控件点击事件。
 | nextLight() | 自己控制高亮的下一个显示。

@@ -1,7 +1,6 @@
 package com.guideview;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -17,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,18 +24,14 @@ import java.util.List;
 
 public class GuideView extends FrameLayout implements View.OnClickListener {
     private Paint maskPaint;
-    private List<Bitmap> desBitmaps;
-    private Canvas desCanvas;
     private int maskColor;
     private boolean isShowAll;
-    private int bitmapPos;
+    private int currentPos;
     private LightType lightType;
     private int radius;
     private boolean isAutoNext;
     private PorterDuffXfermode porterDuffXfermode;
     private BlurMaskFilter blurMaskFilter;
-
-
     private List<ViewInfo> viewInfos;
     private List<LayoutStyle> layoutStyles;
 
@@ -54,19 +48,6 @@ public class GuideView extends FrameLayout implements View.OnClickListener {
         init();
     }
 
-    private void init() {
-        maskPaint = new Paint();
-        maskPaint.setColor(Color.WHITE);
-        maskPaint.setStyle(Paint.Style.FILL);
-        maskPaint.setAntiAlias(true);
-        lightType = LightType.Rectangle;
-        setWillNotDraw(false);
-        desCanvas = new Canvas();
-        maskColor = Color.argb(0xCC, 0, 0, 0);
-        porterDuffXfermode= new PorterDuffXfermode(PorterDuff.Mode.XOR);
-
-    }
-
     public void setAlpha(int alpha) {
         maskColor = Color.argb(alpha, 0, 0, 0);
     }
@@ -74,16 +55,11 @@ public class GuideView extends FrameLayout implements View.OnClickListener {
     public void setBlur(int radius) {
         this.radius = radius;
         setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        blurMaskFilter=new BlurMaskFilter(radius, BlurMaskFilter.Blur.OUTER);
+        blurMaskFilter = new BlurMaskFilter(radius, BlurMaskFilter.Blur.OUTER);
     }
 
     public void setAutoNext(boolean autoNext) {
         isAutoNext = autoNext;
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
     public void type(LightType type) {
@@ -97,25 +73,6 @@ public class GuideView extends FrameLayout implements View.OnClickListener {
 
     public void setViewInfos(List<ViewInfo> viewInfos) {
         this.viewInfos = viewInfos;
-        if (desBitmaps == null) {
-            desBitmaps = new ArrayList<>();
-        }
-        for (ViewInfo viewInfo : viewInfos) {
-            switch (lightType) {
-                case Rectangle:
-                    desBitmaps.add(Bitmap.createBitmap(viewInfo.width, viewInfo.height, Bitmap.Config.ARGB_8888));
-                    break;
-                case Circle:
-                    int diameter = Math.max(viewInfo.width, viewInfo.height);
-                    desBitmaps.add(Bitmap.createBitmap(diameter, diameter, Bitmap.Config.ARGB_8888));
-                    break;
-                case Oval:
-                    desBitmaps.add(Bitmap.createBitmap(viewInfo.width, viewInfo.height, Bitmap.Config.ARGB_8888));
-                    break;
-                default:
-                    break;
-            }
-        }
     }
 
     public void setLayoutStyles(List<LayoutStyle> styles) {
@@ -131,41 +88,47 @@ public class GuideView extends FrameLayout implements View.OnClickListener {
         canvas.drawColor(maskColor);
 
         if (isShowAll) {
-            for (int i = 0; i < desBitmaps.size(); i++) {
+            for (int i = 0; i < viewInfos.size(); i++) {
                 ViewInfo viewInfo = viewInfos.get(i);
                 drawBlackRegion(canvas, viewInfo);
             }
-            maskPaint.setXfermode(porterDuffXfermode); // 设置 Xfermode
-            for (int i = 0; i < desBitmaps.size(); i++) {
+            maskPaint.setXfermode(porterDuffXfermode);
+            for (int i = 0; i < viewInfos.size(); i++) {
                 ViewInfo viewInfo = viewInfos.get(i);
-                Bitmap bitmap = desBitmaps.get(i);
-                bitmap.eraseColor(Color.TRANSPARENT);
-                drawHighLight(canvas, bitmap, viewInfo);
+                drawHighLight(canvas, viewInfo);
             }
         } else {
-            ViewInfo viewInfo = viewInfos.get(bitmapPos);
+            ViewInfo viewInfo = viewInfos.get(currentPos);
             drawBlackRegion(canvas, viewInfo);
-            maskPaint.setXfermode(porterDuffXfermode); // 设置 Xfermode
-            Bitmap bitmap = desBitmaps.get(bitmapPos);
-            bitmap.eraseColor(Color.TRANSPARENT);
-            drawHighLight(canvas, bitmap, viewInfo);
+            maskPaint.setXfermode(porterDuffXfermode);
+            drawHighLight(canvas, viewInfo);
         }
-        maskPaint.setXfermode(null); // 用完及时清除 Xfermode
+        maskPaint.setXfermode(null);
         canvas.restoreToCount(saved);
-
         if (radius > 0) {
             maskPaint.setMaskFilter(blurMaskFilter);
             if (isShowAll) {
-                for (int i = 0; i < desBitmaps.size(); i++) {
+                for (int i = 0; i < viewInfos.size(); i++) {
                     ViewInfo viewInfo = viewInfos.get(i);
                     drawBlur(canvas, viewInfo);
                 }
             } else {
-                ViewInfo viewInfo = viewInfos.get(bitmapPos);
+                ViewInfo viewInfo = viewInfos.get(currentPos);
                 drawBlur(canvas, viewInfo);
             }
             maskPaint.setMaskFilter(null);
         }
+    }
+    private void init() {
+        maskPaint = new Paint();
+        maskPaint.setColor(Color.WHITE);
+        maskPaint.setStyle(Paint.Style.FILL);
+        maskPaint.setAntiAlias(true);
+        lightType = LightType.Rectangle;
+        setWillNotDraw(false);
+        maskColor = Color.argb(0xCC, 0, 0, 0);
+        porterDuffXfermode = new PorterDuffXfermode(PorterDuff.Mode.XOR);
+
     }
 
     private void drawBlur(Canvas srcCanvas, ViewInfo viewInfo) {
@@ -209,32 +172,8 @@ public class GuideView extends FrameLayout implements View.OnClickListener {
         }
     }
 
-    private void drawHighLight(Canvas srcCanvas, Bitmap desBitmap, ViewInfo viewInfo) {
-        switch (lightType) {
-            case Rectangle:
-                desCanvas.setBitmap(desBitmap);
-                desCanvas.drawRect(0, 0, viewInfo.width, viewInfo.height, maskPaint);
-                srcCanvas.drawBitmap(desBitmap, viewInfo.offsetX, viewInfo.offsetY, maskPaint);
-//                加圆角的话可以在这
-//                if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
-//                    desCanvas.drawRoundRect(0, 0, viewInfo.width, viewInfo.height,3,3, maskPaint);
-//                }else {
-//                    desCanvas.drawRect(0, 0, viewInfo.width, viewInfo.height, maskPaint);
-//                }
-                break;
-            case Circle:
-                desCanvas.setBitmap(desBitmap);
-                desCanvas.drawCircle(desBitmap.getWidth() / 2, desBitmap.getWidth() / 2, viewInfo.width / 2, maskPaint);
-                srcCanvas.drawBitmap(desBitmap, viewInfo.offsetX, viewInfo.offsetY, maskPaint);
-                break;
-            case Oval:
-                desCanvas.setBitmap(desBitmap);
-                desCanvas.drawOval(new RectF(0, 0, viewInfo.width, viewInfo.height), maskPaint);
-                srcCanvas.drawBitmap(desBitmap, viewInfo.offsetX, viewInfo.offsetY, maskPaint);
-                break;
-            default:
-                break;
-        }
+    private void drawHighLight(Canvas srcCanvas, ViewInfo viewInfo) {
+        drawBlackRegion(srcCanvas, viewInfo);
     }
 
     public interface OnDismissListener {
@@ -253,15 +192,15 @@ public class GuideView extends FrameLayout implements View.OnClickListener {
     }
 
     public void showHighLight() {
-        if (isShowAll || bitmapPos == viewInfos.size() - 1) {
+        if (isShowAll || currentPos == viewInfos.size() - 1) {
             ((ViewGroup) this.getParent()).removeView(this);
             if (listener != null) {
                 listener.dismiss();
             }
         } else {
             this.removeAllViews();
-            bitmapPos++;
-            layoutStyles.get(bitmapPos).showDecorationOnScreen(viewInfos.get(bitmapPos), this);
+            currentPos++;
+            layoutStyles.get(currentPos).showDecorationOnScreen(viewInfos.get(currentPos), this);
         }
     }
 }

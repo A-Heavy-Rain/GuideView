@@ -4,7 +4,7 @@
 #### 在项目app build.gradle中
 ```
 dependencies {
-    compile 'com.zhaozhibo.guideview:guideview:1.0.4'
+    compile 'com.zhaozhibo.guideview:guideview:1.0.5'
 }
 ```
 
@@ -49,3 +49,5 @@ new GuideViewHelper(MainActivity.this)
 用于控制装饰高亮布局将对于高亮View所处的位子，默认提供了8种，不满足你需求的话，也可以继承LayoutStyle自定义。
 ### ViewInfo
 记录了高亮View的宽高，相对屏幕左上角的坐标。
+
+[博文地址](http://www.jianshu.com/p/d8ca72e0647d)

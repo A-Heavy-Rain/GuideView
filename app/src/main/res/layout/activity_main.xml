@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/rl_content"
     android:fitsSystemWindows="true">
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
@@ -66,6 +67,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         />
+
 
 
 

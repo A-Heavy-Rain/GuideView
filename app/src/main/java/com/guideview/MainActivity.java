@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //注意这里要是addView第一个参数传的是View
         // 一定注意LayoutInflater.from(this).inflate中第二个一定要传入个ViewGroup
         //为了保存XML中的LayoutParams
-        helper = new GuideViewHelper(MainActivity.this)
+        helper = new GuideViewHelper(this)
                 .addView(btn_light1, new RightTopStyle(deco_view1))
                 .addView(tv_light2, new CenterRightStyle(deco_view2))
                 .addView(tv_light3, new LeftBottomStyle(deco_view3, 10))
@@ -156,6 +156,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 })
                 .showAll();
     }
+
 }
 
 

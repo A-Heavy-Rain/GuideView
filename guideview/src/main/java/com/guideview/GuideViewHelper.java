@@ -2,8 +2,10 @@ package com.guideview;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 
 import java.util.ArrayList;
@@ -33,6 +35,8 @@ public class GuideViewHelper {
         lightViews = new ArrayList<>();
         layoutStyles = new ArrayList<>();
     }
+
+
 
 
 
@@ -94,9 +98,14 @@ public class GuideViewHelper {
         return this;
     }
     public void postShow() {
-        rootView.post(new Runnable() {
+        rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
-            public void run() {
+            public void onGlobalLayout() {
+                if (Build.VERSION.SDK_INT < 16) {
+                    rootView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                } else {
+                    rootView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
                 show();
             }
         });
@@ -107,9 +116,14 @@ public class GuideViewHelper {
     }
 
     public void postShowAll() {
-        rootView.post(new Runnable() {
+        rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
-            public void run() {
+            public void onGlobalLayout() {
+                if (Build.VERSION.SDK_INT < 16) {
+                    rootView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                } else {
+                    rootView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
                 showAll();
             }
         });

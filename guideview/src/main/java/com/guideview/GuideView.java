@@ -84,9 +84,7 @@ public class GuideView extends FrameLayout implements View.OnClickListener {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         int saved = canvas.saveLayer(null, null, Canvas.ALL_SAVE_FLAG);
-
         canvas.drawColor(maskColor);
-
         if (isShowAll) {
             for (int i = 0; i < viewInfos.size(); i++) {
                 ViewInfo viewInfo = viewInfos.get(i);
@@ -125,10 +123,10 @@ public class GuideView extends FrameLayout implements View.OnClickListener {
         maskPaint.setStyle(Paint.Style.FILL);
         maskPaint.setAntiAlias(true);
         lightType = LightType.Rectangle;
-        setWillNotDraw(false);
         maskColor = Color.argb(0xCC, 0, 0, 0);
         porterDuffXfermode = new PorterDuffXfermode(PorterDuff.Mode.XOR);
-
+        setWillNotDraw(false);
+        setClickable(true);
     }
 
     private void drawBlur(Canvas srcCanvas, ViewInfo viewInfo) {
